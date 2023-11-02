@@ -245,7 +245,7 @@ def main():
     clean_files(imgs,anns)
     clean_files(anns,imgs)
     
-    control image and annotations counts
+    # control image and annotations counts
     anns= sorted(glob.glob(args.file_path + "/*.txt"))
     imgs= sorted(glob.glob(args.file_path + "/*.png"))     
     print("annotation counts after cleaning :", len(anns))
