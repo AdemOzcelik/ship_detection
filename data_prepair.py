@@ -101,9 +101,9 @@ def create_jsons(file_path,file_type):
         file_name=file.split("/")[-1].rsplit("_",1)[0]+ "_img.png"
         #print(file_name)
 
-        img= Image.open(file.split("/")[0] + "/train/" + file_name)
+        img= Image.open(file.split("/")[0] + "/"+file_type+"/" + file_name)
         im = np.array(img)
-        coco_images.append({'height': im.shape[0], 'width': im.shape[1], 'id': i, 'file_name': file_name})
+        coco_images.append({'height': im.shape[0], 'width': im.shape[1], 'id': image_id, 'file_name': file_name})
 
 
         ann = open(file, 'r')
@@ -118,7 +118,7 @@ def create_jsons(file_path,file_type):
                 dict_={}
 
                 dict_['iscrowd']=0
-                dict_['image_id'] = i
+                dict_['image_id'] = image_id
                 dict_['bbox'] = [int(xmin),int(ymin),int(xmax)-int(xmin),int(ymax)-int(ymin)]
                 dict_['segmentation'] = []
                 dict_['category_id'] = 0
@@ -245,7 +245,7 @@ def main():
     clean_files(imgs,anns)
     clean_files(anns,imgs)
     
-    #control image and annotations counts
+    control image and annotations counts
     anns= sorted(glob.glob(args.file_path + "/*.txt"))
     imgs= sorted(glob.glob(args.file_path + "/*.png"))     
     print("annotation counts after cleaning :", len(anns))
@@ -254,10 +254,11 @@ def main():
     print("images are moving to train and val directories ...")
     split_train_val(imgs,anns,args.train_path,args.val_path)
     
-    print("coco format json files are createing ...")
+    print("coco format json files are creating ...")
     json_files=["train","val"]
     for file in json_files:
         create_jsons(args.file_path,file)
+        print(file+".json file created in " + args.file_path +" directory")
         
     print("done!!!")
                     
