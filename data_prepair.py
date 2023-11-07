@@ -11,7 +11,9 @@ import cv2
 import argparse
 import os
 from sklearn.model_selection import train_test_split
-    
+from tabulate import tabulate
+
+
 def crop_images(im,image_id,overlap,crop_size,file_path):
 
     for i in range(math.ceil(im.shape[0]/crop_size)):        
@@ -158,24 +160,20 @@ def main():
     parser.add_argument('--max_size', type=int, default=100, help='give orginal image and bboxes if bboxes size larger than this value help')
     parser.add_argument('--pad_size',type=int, default=1, help='pad_size')
     args = parser.parse_args()
-    
+   
     if not os.path.exists(args.file_path):
         os.makedirs(args.file_path)
-                    
-    Image.MAX_IMAGE_PIXELS=None
+        
+    Image.MAX_IMAGE_PIXELS=None              
     images=glob.glob("train/*.png")
     
-    print("Cropped images and annotation files will be saved to \033[1m{}\033[0m directory".format(args.file_path))
-    print("Number of images : ",len(images))
-    print("overlap size: ",args.overlap)
-    print("crop size:",args.crop_size)
-    print("ignored small object size :", args.ignored_small_obj_size)
-    print("max object size for cropping:",args.max_size)
-    print("padding size :",args.pad_size)
+
+    print(tabulate([['file path', args.file_path + "/"], ['Number of images', len(images)],["overlap size: ",args.overlap],["crop size:",args.crop_size],["ignored small object size :", args.ignored_small_obj_size],["max object size for cropping:",args.max_size],["padding size :",args.pad_size]], headers=["parameters"],tablefmt='grid'))
+    print("Image cropping  in progress...")
     ann = open('annot_train.txt', 'r')
     
     content = ann.read()
-    for image in tqdm.tqdm(images):
+    for image in tqdm.tqdm(images, bar_format='{l_bar}{bar:20}{r_bar}{bar:-10b}'):
         
         img= Image.open(image)
         if len(img.size)==2:
@@ -237,29 +235,28 @@ def main():
                         
     anns= glob.glob(args.file_path + "/*.txt")
     imgs= glob.glob(args.file_path + "/*.png")
-    
-    print("annotation counts after crop process :",len(anns))
-    print("image counts after crop process :",len(imgs))
+    print("Images and annotations are cropped.")
+    # print(tabulate([['annotation counts after crop process', len(anns)], ["image counts after crop process",len(imgs)]], headers=["output"],tablefmt='grid'))
     print("Images without annotations are deleting ...")
     
     clean_files(imgs,anns)
     clean_files(anns,imgs)
     
-    # control image and annotations counts
+    #control image and annotations counts
     anns= sorted(glob.glob(args.file_path + "/*.txt"))
-    imgs= sorted(glob.glob(args.file_path + "/*.png"))     
-    print("annotation counts after cleaning :", len(anns))
-    print("image counts after cleaning :",len(imgs))
+    imgs= sorted(glob.glob(args.file_path + "/*.png"))  
     
+    print(tabulate([['annotation counts after cleaning', len(anns)], ["image counts after cleaning",len(imgs)]], headers=["output"],tablefmt='grid')) 
+    print("*"*50)
     print("images are moving to train and val directories ...")
     split_train_val(imgs,anns,args.train_path,args.val_path)
-    
+    print("*"*50)
     print("coco format json files are creating ...")
     json_files=["train","val"]
     for file in json_files:
         create_jsons(args.file_path,file)
         print(file+".json file created in " + args.file_path +" directory")
-        
+    print("*"*50)
     print("done!!!")
                     
 if __name__ == "__main__":
