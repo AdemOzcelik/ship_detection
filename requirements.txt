@@ -1,0 +1,21 @@
+# Core deep learning
+torch
+torchvision
+
+# OpenMMLab dependencies
+mmcv
+mmengine
+mmdet
+mmyolo
+
+# Utility libraries
+numpy
+pandas
+tqdm
+opencv-python
+pillow
+matplotlib
+tabulate
+
+# Optional but typically needed
+pycocotools
