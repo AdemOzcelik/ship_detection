@@ -94,5 +94,5 @@ This project focuses on normalizing heterogeneous data, optimizing detection for
 
 📸 Example Predictions
 
-Available in:
-👉 inference_result.ipynb
+### 📌 Available in  
+👉 [inference_result.ipynb](./inference_result.ipynb)
