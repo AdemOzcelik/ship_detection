@@ -1,7 +1,7 @@
 # Ship Detection from Satellite Imagery
 ## 🏆 4th Place – Data-Driven Ship Detection Competition
 
-This repository contains my solution that ranked 4th in the Ship Detection competition organized by Data-Driven Science on Huggingface.
+This repository contains my solution that ranked 4th in the Ship Detection competition organized by Data-Driven Science on [Huggingface](https://huggingface.co/datasets/datadrivenscience/ship-detection).
 The challenge involved detecting ships in satellite images of varying formats, resolutions, and aspect ratios, requiring a robust and adaptive object detection pipeline.
 
 The model achieves stable performance across heterogeneous satellite imagery thanks to custom preprocessing, scale-aware augmentations, and an optimized inference workflow.
