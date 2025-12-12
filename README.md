@@ -25,17 +25,21 @@ ship_detection/
 
 ## 🛰️ Competition Overview
 
-Objective: Detect ships in satellite images (object detection task)
+- Objective:
 
-Challenges:
+  Detect ships in satellite images (object detection task)
 
-Highly diverse image formats
+- Challenges:
 
-Large variations in resolution and aspect ratio
+    Highly diverse image formats
+    
+    Large variations in resolution and aspect ratio
+    
+    Illumination, angle, and atmospheric differences
 
-Illumination, angle, and atmospheric differences
+- Evaluation Metric:
 
-Evaluation Metric: mAP / IoU (per competition rules)
+  mAP / IoU (per competition rules)
 
 This project focuses on normalizing heterogeneous data, optimizing detection for small objects, and building a robust multi-resolution inference strategy.
 
