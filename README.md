@@ -42,35 +42,43 @@ This project focuses on normalizing heterogeneous data, optimizing detection for
 ## 🧠 Approach & Model
 ### ✔ Data Processing
 
-Dynamic resizing pipeline to handle different image dimensions
+- Image Tiling with Overlap
 
-Scale-invariant augmentation
+    Large satellite images are split into multiple smaller tiles to increase training sample count and ensure small ships are captured.
+    Overlapping windows are used so ships located on patch borders are not lost.
 
-Random crop, flip, rotate, mosaic (if applicable)
+- Aspect-Ratio–Aware Resizing
 
-Normalization & histogram adjustments
+    Each tile is resized to the target model resolution using a dynamic scale factor computed from the original image width–height ratio.
+    This maintains ship proportions across images of different shapes.
+
+- Consistent Output Directory Structure
+
+    The script automatically generates images/ and labels/ directories and writes all processed tiles into the correct structure for YOLO-style training pipelines.
+
+- Annotation Cropping for Tiles
+
+    Bounding boxes are recalculated for each tile.
+    Only the objects that fall inside a tile’s region are kept, and their coordinates are shifted accordingly.
 
 ### ✔ Model Architecture
+- MMYOLO (OpenMMLab) YOLOv8-based architecture adapted for satellite-image ship detection
 
-General features of the solution:
+- Multi-scale feature extraction to improve detection on varying ship sizes
 
-Custom YOLO-based backbone
+- Small-object–oriented detection heads optimized for high-resolution aerial imagery
 
-Multi-scale feature extraction
-
-Small-object oriented detection heads
-
-Optimized anchors & IoU thresholds
+- Custom anchor configurations & tuned IoU thresholds to improve recall on small and dense ship clusters
 
 ### ✔ Training
 
-Mixed precision training (AMP)
+- Active learning–driven iterative training to progressively refine the model using hard samples
 
-Cosine annealing LR schedule
+- Cosine annealing learning-rate schedule for stable convergence
 
-~300 epochs
+- ~300 epochs total training with periodic evaluation and checkpointing
 
-Hyperparameter tuning for anchor sizes & LR policies
+- Hyperparameter tuning focused on anchor sizes, LR policies, and small-object sensitivity
 
 ## 📊 Results
 
